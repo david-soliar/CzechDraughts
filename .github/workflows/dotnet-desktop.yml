@@ -1,61 +1,42 @@
-name: Build game
+name: build game
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: [push]
 
 jobs:
-
-  build-windows:
-    runs-on: windows-latest
+  build:
     strategy:
+      fail-fast: false
       matrix:
-        rid: [ "win-x64", "win-arm64" ]
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: windows-latest
+            rid: win-x64
+          - os: windows-latest
+            rid: win-arm64
+          - os: macos-13
+            rid: osx-x64
+          - os: macos-14
+            rid: osx-arm64
+
+    runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
-        with: { dotnet-version: "8.0.x" }
-      - name: Publish AOT
-        run: dotnet publish -c Release -r ${{ matrix.rid }} -p:PublishAot=true --self-contained true
-      - uses: actions/upload-artifact@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish AOT self-contained
+        run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishAot=true
+
+      - name: Zip build
+        run: |
+          cd bin/Release/net8.0/${{ matrix.rid }}
+          zip -r game-${{ matrix.rid }}.zip native/*
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: game-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/native/*
-
-  build-linux:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        rid: [ "linux-x64", "linux-arm64" ]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with: { dotnet-version: "8.0.x" }
-
-      - name: Publish AOT
-        run: dotnet publish -c Release -r ${{ matrix.rid }} -p:PublishAot=true --self-contained true
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: game-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/native/*
-
-  build-macos:
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        rid: [ "osx-x64", "osx-arm64" ]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with: { dotnet-version: "8.0.x" }
-
-      - name: Publish AOT
-        run: dotnet publish -c Release -r ${{ matrix.rid }} -p:PublishAot=true --self-contained true
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: game-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/native/*
+          path: bin/Release/net8.0/${{ matrix.rid }}/game-${{ matrix.rid }}.zip
