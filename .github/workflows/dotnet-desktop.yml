@@ -74,4 +74,4 @@ jobs:
       with:
         name: game-${{ matrix.rid }}
         path: |
-          **/bin/Release/**/${{ matrix.rid }}/publish/*
+          **/bin/Release/**/${{ matrix.rid }}/native/*
