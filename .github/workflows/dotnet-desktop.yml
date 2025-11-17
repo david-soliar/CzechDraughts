@@ -5,16 +5,16 @@ on: [push]
 jobs:
   build:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         include:
           - os: ubuntu-latest
             rid: linux-x64
           - os: windows-latest
             rid: win-x64
-          - os: macos-13
+          - os: macos-15-intel
             rid: osx-x64
-          - os: macos-14
+          - os: macos-latest
             rid: osx-arm64
 
     runs-on: ${{ matrix.os }}
@@ -29,9 +29,15 @@ jobs:
         run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishAot=true
 
       - name: Zip build
+        shell: pwsh
         run: |
-          cd bin/Release/net8.0/${{ matrix.rid }}
-          zip -r CzechDraughts-${{ matrix.rid }}.zip native/*
+          $output = "bin/Release/net8.0/${{ matrix.rid }}/CzechDraughts-${{ matrix.rid }}.zip"
+          if ($env:RUNNER_OS -eq "Windows") {
+              Compress-Archive -Path "bin/Release/net8.0/${{ matrix.rid }}/native/*" -DestinationPath $output
+          } else {
+              cd bin/Release/net8.0/${{ matrix.rid }}
+              zip -r CzechDraughts-${{ matrix.rid }}.zip native/*
+          }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
