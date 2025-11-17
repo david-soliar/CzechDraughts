@@ -39,9 +39,8 @@ jobs:
               zip -r CzechDraughts-${{ matrix.rid }}.zip native/*
           }
 
-      - name: Release & upload
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: CzechDraughts-${{ matrix.rid }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: CzechDraughts-${{ matrix.rid }}
+          path: bin/Release/net8.0/${{ matrix.rid }}/CzechDraughts-${{ matrix.rid }}.zip
