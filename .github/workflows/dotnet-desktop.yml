@@ -67,7 +67,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Publish self-contained
-      run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+      run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishAot=true
 
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
