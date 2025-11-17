@@ -1,4 +1,4 @@
-name: build game
+name: Build CzechDraughts
 
 on: [push]
 
@@ -12,8 +12,6 @@ jobs:
             rid: linux-x64
           - os: windows-latest
             rid: win-x64
-          - os: windows-latest
-            rid: win-arm64
           - os: macos-13
             rid: osx-x64
           - os: macos-14
@@ -33,10 +31,10 @@ jobs:
       - name: Zip build
         run: |
           cd bin/Release/net8.0/${{ matrix.rid }}
-          zip -r game-${{ matrix.rid }}.zip native/*
+          zip -r CzechDraughts-${{ matrix.rid }}.zip native/*
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: game-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/game-${{ matrix.rid }}.zip
+          name: CzechDraughts-${{ matrix.rid }}
+          path: bin/Release/net8.0/${{ matrix.rid }}/CzechDraughts-${{ matrix.rid }}.zip
