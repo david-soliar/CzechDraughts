@@ -2,7 +2,7 @@
 {
     internal class Graphics
     {
-        private Data data;
+        private readonly Data data;
 
         private const string MyTab = "      ";
         private Dictionary<int, string> helpTexts = new Dictionary<int, string>();

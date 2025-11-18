@@ -14,12 +14,6 @@
 
         public Data()
         {
-            InitializeGameState();
-            SetInitialGame();
-        }
-
-        private void InitializeGameState()
-        {
             board = new BoardSquare[8, 8];
             pieces = new Piece[8, 8];
             history = new List<Piece[]>();
@@ -27,6 +21,7 @@
             status = GameStatus.InProgress;
             statistics = new GameStatistics();
             chosenPiece = new Square(-1, -1);
+            SetInitialGame();
         }
 
         public void SetInitialGame()

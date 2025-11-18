@@ -2,10 +2,10 @@
 {
     internal class Game
     {
-        private Data data;
-        private Graphics graphics;
-        private InputHandler inputHandler;
-        private Logic logic;
+        private readonly Data data;
+        private readonly Graphics graphics;
+        private readonly InputHandler inputHandler;
+        private readonly Logic logic;
 
         public Game() 
         { 

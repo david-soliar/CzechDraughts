@@ -2,9 +2,9 @@
 {
     internal class InputHandler
     {
-        private Data data;
-        private Graphics graphics;
-        private Logic logicResolver;
+        private readonly Data data;
+        private readonly Graphics graphics;
+        private readonly Logic logicResolver;
 
         public InputHandler(Data data, Graphics graphics, Logic logicResolver) 
         { 

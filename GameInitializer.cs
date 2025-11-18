@@ -2,7 +2,7 @@
 {
     internal class GameInitializer
     {
-        private Data data;
+        private readonly Data data;
         public Graphics graphics;
         public InputHandler inputHandler;
         public Logic logic;

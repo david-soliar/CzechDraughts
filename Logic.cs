@@ -2,7 +2,7 @@
 {
     internal class Logic
     {
-        private Data data;
+        private readonly Data data;
         private List<List<Square>> listOfPossibleMoves;
         private bool queen;
         private bool tookSomething;
@@ -426,15 +426,14 @@
             Square leftSquare = new Square(currentSquare.X - 1, currentSquare.Y + dy);
             Square rightSquare = new Square(currentSquare.X + 1, currentSquare.Y + dy);
 
-            bool leftEnemy = false;
-            bool rightEnemy = false;
-            bool leftEmpty = false;
-            bool rightEmpty = false;
-
             if (InBoard(currentSquare))
             {
-                leftEnemy = LeftEnemyMove(leftSquare, rightSquare, dy, initialDirection, initialMove, jumpedOverPieces);
-                rightEnemy = RightEnemyMove(leftSquare, rightSquare, dy, initialDirection, initialMove, jumpedOverPieces);
+
+                bool leftEmpty = false;
+                bool rightEmpty = false;
+                bool leftEnemy = LeftEnemyMove(leftSquare, rightSquare, dy, initialDirection, initialMove, jumpedOverPieces);
+                bool rightEnemy = RightEnemyMove(leftSquare, rightSquare, dy, initialDirection, initialMove, jumpedOverPieces);
+
                 if (!alreadyMoved)
                 {
                     leftEmpty = LeftEmptyMove(leftSquare, rightSquare, dy, initialDirection, initialMove, jumpedOverPieces);
