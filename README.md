@@ -2,19 +2,27 @@
 
 A simple C# console implementation of Czech Draughts [(Česká dáma - wikipedia)](https://en.wikipedia.org/wiki/Czech_draughts).
 
-## Preview
+You can play classic 1v1 (**Classic PvP**) Czech Draughts or create your own custom starting positions (**Creative PvP**).
+
+## Preview - Classic PvP
 <table>
   <tr>
-    <td><img src="/preview/start.png" alt="Game start"/></td>
+    <td><img src="/preview/start_classic.png" alt="Game start"/></td>
     <td><img src="/preview/classic.png" alt="Classic 1v1"/></td>
   </tr>
   <tr>
-    <td><img src="/preview/classic_hint.png" alt="Hint for player"/></td>
-    <td><img src="/preview/creative.png" alt="Creative mode"/></td>
+    <td><img src="/preview/classic_move_hint.png" alt="Hint for player"/></td>
+    <td><img src="/preview/classic_hint.png" alt="Creative mode"/></td>
   </tr>
 </table>
 
-> You can play classic 1v1 (**Classic PvP**) Czech Draughts or create your own custom starting positions (**Creative PvP**).
+## Preview - Creative PvP
+<table>
+  <tr>
+    <td><img src="/preview/start_creative.png" alt="Game start"/></td>
+    <td><img src="/preview/creative.png" alt="Classic 1v1"/></td>
+  </tr>
+</table>
 
 ## Rules
 * [http://www.deskovehry.info/pravidla/ceska-dama.htm](https://www.deskovehry.info/pravidla/ceska-dama.htm)
