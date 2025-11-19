@@ -31,3 +31,4 @@ You can play classic 1v1 (**Classic PvP**) Czech Draughts or create your own cus
 
 ## Download
 Download the executable for your platform from the [Releases](https://github.com/david-soliar/CzechDraughts/releases).
+> The program may trigger antivirus warnings
