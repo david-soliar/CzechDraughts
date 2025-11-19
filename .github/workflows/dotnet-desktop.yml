@@ -28,19 +28,15 @@ jobs:
       - name: Publish AOT self-contained
         run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishAot=true -p:DebugType=None -p:PublishTrimmed=true -p:DebugSymbols=false
 
-      - name: Zip build
+      - name: Remove macos debug
         shell: pwsh
         run: |
-          $output = "bin/Release/net8.0/${{ matrix.rid }}/CzechDraughts-${{ matrix.rid }}.zip"
-          if ($env:RUNNER_OS -eq "Windows") {
-              Compress-Archive -Path "bin/Release/net8.0/${{ matrix.rid }}/native/*" -DestinationPath $output
-          } else {
-              cd bin/Release/net8.0/${{ matrix.rid }}
-              zip -r CzechDraughts-${{ matrix.rid }}.zip native/*
+          if ($env:RUNNER_OS -ne "Windows") {
+              rm -rf bin/Release/net8.0/${{ matrix.rid }}/native/CzechDraughts.dSYM
           }
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: CzechDraughts-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/CzechDraughts-${{ matrix.rid }}.zip
+          path: bin/Release/net8.0/${{ matrix.rid }}/native/*
