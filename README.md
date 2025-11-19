@@ -28,3 +28,6 @@ You can play classic 1v1 (**Classic PvP**) Czech Draughts or create your own cus
 * [http://www.deskovehry.info/pravidla/ceska-dama.htm](https://www.deskovehry.info/pravidla/ceska-dama.htm)
 * [http://www.damweb.cz/pravidla/cdfull.html](http://www.damweb.cz/pravidla/cdfull.html)
 > archived [link 1](https://web.archive.org/web/20240101000000*/https://www.deskovehry.info/pravidla/ceska-dama.htm), [link2 ](https://web.archive.org/web/20240101000000*/http://www.damweb.cz/pravidla/cdfull.html)
+
+## Download
+Download the executable for your platform from the [Releases](https://github.com/david-soliar/CzechDraughts/releases).
