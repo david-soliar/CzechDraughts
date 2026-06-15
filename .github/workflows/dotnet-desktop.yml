@@ -55,7 +55,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p dist
-          7z a dist/CzechDraughts-${{ matrix.runtime }}.zip publish/CzechDraughts*
+          FILE=$(find publish -maxdepth 1 -type f -name "CzechDraughts*" -print -quit)
+          7z a dist/CzechDraughts-${{ matrix.runtime }}.zip "$FILE"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
