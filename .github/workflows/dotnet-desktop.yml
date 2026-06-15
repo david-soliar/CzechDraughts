@@ -6,43 +6,82 @@ on:
       - '**/*.cs'
       - '**/*.yml'
       - '**/*.csproj'
-      - '**/*.sln'
 
 jobs:
+
   build:
+    runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: true
       matrix:
         include:
           - os: ubuntu-latest
-            rid: linux-x64
-          - os: windows-latest
-            rid: win-x64
-          - os: macos-15-intel
-            rid: osx-x64
-          - os: macos-latest
-            rid: osx-arm64
+            runtime: linux-x64
 
-    runs-on: ${{ matrix.os }}
+          - os: windows-latest
+            runtime: win-x64
+
+          - os: macos-latest
+            runtime: osx-arm64
+
+          - os: macos-15-intel
+            runtime: osx-x64
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      - name: Publish AOT self-contained
-        run: dotnet publish -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishAot=true -p:DebugType=None -p:PublishTrimmed=true -p:DebugSymbols=false
+      - name: Publish
+        run: >
+          dotnet publish
+          -c Release
+          -r ${{ matrix.runtime }}
+          --self-contained true
+          -p:PublishAot=true
+          -p:PublishTrimmed=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -p:StripSymbols=true
+          -p:InvariantGlobalization=true
+          -p:OptimizationPreference=Size
+          -p:UseSizeOptimizedLinq=true
+          -o publish
 
-      - name: Remove macos debug
-        shell: pwsh
+      - name: Package
+        shell: bash
         run: |
-          if ($env:RUNNER_OS -ne "Windows") {
-              rm -rf bin/Release/net8.0/${{ matrix.rid }}/native/CzechDraughts.dSYM
-          }
+          mkdir -p dist
+          7z a dist/CzechDraughts-${{ matrix.runtime }}.zip publish/CzechDraughts*
 
-      - name: Upload artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: CzechDraughts-${{ matrix.rid }}
-          path: bin/Release/net8.0/${{ matrix.rid }}/native/*
+          name: CzechDraughts-${{ matrix.runtime }}
+          path: dist/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Generate version
+        id: ver
+        run: echo "version=1.0.${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.ver.outputs.version }}
+          name: ${{ github.event.repository.name }} v${{ steps.ver.outputs.version }}
+          files: dist/**/*.zip
